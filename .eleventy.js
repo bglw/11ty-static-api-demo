@@ -18,6 +18,18 @@ module.exports = function (eleventyConfig) {
   };
 
   /**
+   * Register a shortcode that takes in a single post from the current scope,
+   * and formats it into a JSON listing that would be consumed as an API.
+   *
+   * This is used in the _includes/post-layout.njk file,
+   * which is the layout set for all markdown files in the posts/ folder,
+   * which thus generates the /posts/*.json "endpoints".
+   */
+  eleventyConfig.addShortcode("dumpPost", function () {
+    return JSON.stringify(postAPIData(this.page, this.ctx), null, 2);
+  });
+
+  /**
    * Register a filter that takes in our entire posts collection,
    * and formats it into a JSON listing that would be consumed as an API.
    *
@@ -30,18 +42,5 @@ module.exports = function (eleventyConfig) {
       2
     );
   });
-
-  /**
-   * Register a shortcode that takes in a single post from the current scope,
-   * and formats it into a JSON listing that would be consumed as an API.
-   *
-   * This is used in the _includes/post-layout.njk file,
-   * which is the layout set for all markdown files in the posts/ folder,
-   * which thus generates the /posts/*.json "endpoints".
-   */
-  eleventyConfig.addShortcode("dumpPost", function () {
-    return JSON.stringify(postAPIData(this.page, this.ctx), null, 2);
-  });
-
   return {};
 };
